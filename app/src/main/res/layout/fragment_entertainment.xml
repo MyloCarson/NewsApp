@@ -1,0 +1,66 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.mylocarson.newsapp.fragment.EntertainmentFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--<Space-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="130dp"-->
+            <!--android:id="@+id/space"/>-->
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/entSwipe"
+            android:layout_below="@id/space">
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/ent_Recycler"
+                android:visibility="visible"
+                />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="2"
+            android:gravity="bottom|center_horizontal"
+            android:layout_alignParentBottom="true">
+
+            <Button
+                android:id="@+id/readMoreEnt"
+                style="@style/PrimaryFlatButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:elevation="60dp"
+                android:gravity="center"
+                android:text="@string/more"
+                android:textAlignment="center"
+                android:textColor="@android:color/widget_edittext_dark"
+                android:textSize="15sp"
+                android:textStyle="normal"
+                android:visibility="gone"
+                android:fontFamily="@font/lato_regular"/>
+
+            <ProgressBar
+                android:id="@+id/readMoreProgressEnt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</FrameLayout>

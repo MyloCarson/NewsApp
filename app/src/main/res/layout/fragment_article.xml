@@ -1,0 +1,85 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    tools:context="com.mylocarson.newsapp.fragment.ArticleFragment">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.v4.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="120dp"
+            android:id="@+id/space"/>
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:id="@+id/web_progress"
+            />
+        <WebView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/webview"
+            android:layout_below="@id/space">
+
+        </WebView>
+    </RelativeLayout>
+    <!--<com.asksira.webviewsuite.WebViewSuite-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--app:enableJavaScript="true"-->
+        <!--app:webViewProgressBarStyle="circular"-->
+        <!--app:inflationDelay="100"-->
+        <!--app:enableHorizontalScrollBar="false"-->
+        <!--app:enableVerticalScrollBar="false"-->
+        <!--app:overrideEmailLink="true"-->
+        <!--app:overrideTelLink="true"-->
+        <!--android:id="">-->
+        <!---->
+    <!--</com.asksira.webviewsuite.WebViewSuite>-->
+
+    <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:weightSum="3"-->
+            <!--android:id="@+id/lay1"-->
+            <!--android:orientation="vertical"-->
+            <!--android:layout_alignParentTop="true">-->
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:id="@+id/article_author"-->
+                <!--/>-->
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:id="@+id/article_title"-->
+                <!--android:layout_weight="1"/>-->
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:id="@+id/date_pub"/>-->
+
+        <!--</LinearLayout>-->
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:id="@+id/lay2"-->
+            <!--android:layout_below="@id/lay1">-->
+            <!---->
+
+        <!--</LinearLayout>-->
+    <!--</RelativeLayout>-->
+
+</FrameLayout>

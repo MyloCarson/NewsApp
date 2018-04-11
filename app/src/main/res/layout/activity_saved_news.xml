@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<android.support.design.widget.CoordinatorLayout -->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--xmlns:tools="http://schemas.android.com/tools"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:id="@+id/firstLayout"-->
+    <!--tools:context="com.mylocarson.newsapp.activities.SavedNewsActivity">-->
+
+    <!--<android.support.design.widget.AppBarLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">-->
+
+        <!--<android.support.v7.widget.Toolbar-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="?android:attr/actionBarSize"-->
+            <!--android:background="?attr/colorPrimary"-->
+            <!--app:layout_scrollFlags="scroll|enterAlways"-->
+            <!--app:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
+            <!--android:id="@+id/toolbar"-->
+
+            <!--&gt;-->
+
+        <!--</android.support.v7.widget.Toolbar>-->
+
+    <!--</android.support.design.widget.AppBarLayout>-->
+
+    <!--<android.support.constraint.ConstraintLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+
+        <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/savedNewsRecycler"-->
+            <!--android:scrollbars="none"-->
+            <!--app:layout_constraintTop_toTopOf="parent"-->
+            <!--app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--app:layout_constraintRight_toRightOf="parent" />-->
+
+        <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:visibility="gone"-->
+            <!--android:fontFamily="@font/open_sans_semibold"-->
+            <!--android:textSize="18sp"-->
+            <!--android:text="No Saved News"-->
+            <!--android:textColor="@color/black"-->
+            <!--app:layout_constraintTop_toTopOf="parent"-->
+            <!--app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--app:layout_constraintRight_toRightOf="parent"-->
+            <!--android:id="@+id/noNews" />-->
+
+
+    <!--</android.support.constraint.ConstraintLayout>-->
+
+
+<!--</android.support.design.widget.CoordinatorLayout>-->
+
+
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+
+<android.support.design.widget.AppBarLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="@style/AppThemeNoTitleBar">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:titleTextColor="@color/white"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:layout_scrollFlags="scroll|enterAlways">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="?attr/actionBarSize"
+                android:src="@mipmap/ic_launcher"
+                android:layout_gravity="start"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:scaleType="fitCenter"
+                android:id="@+id/logo"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:fontFamily="@font/open_sans_semibold"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:layout_toRightOf="@id/logo"
+                android:layout_toEndOf="@id/logo"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="7dp"
+                android:layout_marginLeft="7dp"/>
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
+</android.support.design.widget.AppBarLayout>
+
+<android.support.constraint.ConstraintLayout
+    android:layout_below="@id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/eventplannerLayout"
+    tools:context="com.mylocarson.newsapp.activities.SavedNewsActivity"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/savedNewsRecycler"
+        android:scrollbars="none"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:fontFamily="@font/open_sans_semibold"
+        android:textSize="18sp"
+        android:gravity="center_vertical|center|center_horizontal"
+        android:text="No Saved News"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/noNews" />
+
+</android.support.constraint.ConstraintLayout>
+
+</android.support.design.widget.CoordinatorLayout>
+
