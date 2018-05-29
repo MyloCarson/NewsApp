@@ -19,7 +19,6 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.mylocarson.newsapp.MainActivity;
@@ -28,7 +27,6 @@ import com.mylocarson.newsapp.activities.SavedNewsActivity;
 import com.mylocarson.newsapp.database.NewsAppDBHelper;
 import com.mylocarson.newsapp.database.NewsContract;
 import com.mylocarson.newsapp.fragment.ArticleFragment;
-import com.mylocarson.newsapp.interfaces.OnEmptyRecycler;
 import com.mylocarson.newsapp.models.ArticlesItem;
 import com.squareup.picasso.Picasso;
 
@@ -39,27 +37,29 @@ import java.util.ArrayList;
  */
 
 
+@SuppressWarnings("ALL")
 public class SavedNewsRecyclerAdapter extends RecyclerView.Adapter<SavedNewsRecyclerAdapter.MyViewHolder> {
-    ArrayList<ArticlesItem> articleArrayList;
-    Context context;
-    AppCompatActivity activity;
+    private final ArrayList<ArticlesItem> articleArrayList;
+    private final Context context;
+    private final AppCompatActivity activity;
 
-    NewsAppDBHelper newsAppDBHelper;
-    SQLiteDatabase sqLiteDatabase;
+    private NewsAppDBHelper newsAppDBHelper;
+    private SQLiteDatabase sqLiteDatabase;
 
-    RecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView;
 
-    OnEmptyRecycler onEmptyRecycler;
+    // --Commented out by Inspection (29/05/2018, 17:44):OnEmptyRecycler onEmptyRecycler;
 
-    public SavedNewsRecyclerAdapter(AppCompatActivity activity, Context context, ArrayList<ArticlesItem> articleArrayList){
+    public SavedNewsRecyclerAdapter(AppCompatActivity activity, Context context, ArrayList<ArticlesItem> articleArrayList) {
         this.articleArrayList = articleArrayList;
         this.context = context;
         this.activity = activity;
 //        this.mRecyclerView = recyclerView;
     }
+
     @Override
     public SavedNewsRecyclerAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.saved_recycler_list_item,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.saved_recycler_list_item, parent, false);
 
         return new MyViewHolder(view);
     }
@@ -73,7 +73,7 @@ public class SavedNewsRecyclerAdapter extends RecyclerView.Adapter<SavedNewsRecy
                 .load(articleArrayList.get(position).getUrlToImage())
                 .placeholder(R.mipmap.no_imagee)
                 .error(R.mipmap.no_imagee)
-                .resize(250,250)
+                .resize(250, 250)
                 .centerCrop()
                 .into(holder.news_image);
         setAnimation(holder.itemView);
@@ -87,76 +87,13 @@ public class SavedNewsRecyclerAdapter extends RecyclerView.Adapter<SavedNewsRecy
         return this.articleArrayList.size();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder{
-        private TextView news_title;
-        private TextView news_desc;
-        private ImageView news_image, deleteNews,shareNews;
-
-        public MyViewHolder(View view){
-            super(view);
-            news_title = (TextView)view.findViewById(R.id.news_title);
-            news_desc = (TextView)view.findViewById(R.id.news_desc);
-            news_image = (ImageView)view.findViewById(R.id.news_image);
-            deleteNews = (ImageView)view.findViewById(R.id.deleteNews);
-            shareNews = view.findViewById(R.id.shareNews);
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-//                    Toast.makeText(context,articleArrayList.get(getAdapterPosition()).getTitle(),Toast.LENGTH_LONG).show();
-//                    ArticleFragment articleFragment = ArticleFragment.newInstance(articleArrayList.get(getAdapterPosition()),"");
-                    ArticleFragment articleFragment = new ArticleFragment();
-                    Bundle args = new Bundle();
-                    args.putParcelable("param1",articleArrayList.get(getAdapterPosition()));
-                    args.putString("param2","");
-                    articleFragment.setArguments(args);
-                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.setCustomAnimations(R.animator.fragment_slide_left_enter,
-                            R.animator.fragment_slide_left_exit,R.animator.fragment_slide_right_enter,
-                            R.animator.fragment_slide_right_exit);
-                    fragmentTransaction.add(R.id.firstLayout,articleFragment)
-                            .addToBackStack(MainActivity.FRAGMENT_TAG)
-                            .commit();
-                }
-            });
-
-            newsAppDBHelper =  new NewsAppDBHelper(view.getContext());
-
-            sqLiteDatabase= newsAppDBHelper.getWritableDatabase();
-            final ContentValues contentValues =  new ContentValues();
-            final Gson gson = new Gson();
-
-
-            deleteNews.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    alertDialog(view.getContext(),getAdapterPosition(),view).show();
-
-                }
-            });
-            shareNews.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ArticlesItem articlesItem = articleArrayList.get(getAdapterPosition());
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_SEND);
-                    intent.putExtra(Intent.EXTRA_TEXT, "Check out this news article \n "+articlesItem.getTitle() +" \nLink : "+articlesItem.getUrl()+
-                    "\nTry the NewsApp  ");
-                    intent.setType("text/plain");
-                    activity.startActivity(Intent.createChooser(intent,"SEND TO "));
-                }
-            });
-        }
-    }
-
-    private void setAnimation (View view){
-        AlphaAnimation animation = new AlphaAnimation(0.0f,1.0f);
+    private void setAnimation(View view) {
+        AlphaAnimation animation = new AlphaAnimation(0.0f, 1.0f);
         animation.setDuration(1000);
         view.startAnimation(animation);
     }
 
-    AlertDialog alertDialog (final Context context, final int position, final View view){
+    private AlertDialog alertDialog(final Context context, final int position, final View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Are you sure you want to delete this article ?");
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -168,18 +105,20 @@ public class SavedNewsRecyclerAdapter extends RecyclerView.Adapter<SavedNewsRecy
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                newsAppDBHelper =  new NewsAppDBHelper(view.getContext());
+                newsAppDBHelper = new NewsAppDBHelper(view.getContext());
 
                 final SQLiteDatabase sqLiteDatabase = newsAppDBHelper.getWritableDatabase();
-                ArticlesItem  articlesItem = articleArrayList.get(position);
+                ArticlesItem articlesItem = articleArrayList.get(position);
 
-                long id  = sqLiteDatabase.delete(NewsContract.NewsItem.TABLE_NAME, NewsContract.NewsItem._ID +" = "+ articlesItem.getArticleId_fromDB(),null);
-                if (id != 0){
-                    Snackbar.make(view,"Deleted",Snackbar.LENGTH_SHORT).show();
+                long id = sqLiteDatabase.delete(NewsContract.NewsItem.TABLE_NAME, NewsContract.NewsItem._ID + " = " + articlesItem.getArticleId_fromDB(), null);
+                if (id != 0) {
+                    Snackbar.make(view, "Deleted", Snackbar.LENGTH_SHORT).show();
                     articleArrayList.remove(position);
                     mRecyclerView.getAdapter().notifyDataSetChanged();
                     dialogInterface.dismiss();
-                }else {dialogInterface.dismiss();}
+                } else {
+                    dialogInterface.dismiss();
+                }
             }
         });
 
@@ -188,13 +127,78 @@ public class SavedNewsRecyclerAdapter extends RecyclerView.Adapter<SavedNewsRecy
 
     @Override
     public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
-        Log.e("Recycler","Detached");
+        Log.e("Recycler", "Detached");
         sqLiteDatabase.close();
     }
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         this.mRecyclerView = recyclerView;
+    }
+
+    class MyViewHolder extends RecyclerView.ViewHolder {
+        private final TextView news_title;
+        private final TextView news_desc;
+        private final ImageView news_image;
+        private final ImageView deleteNews;
+        private final ImageView shareNews;
+
+        MyViewHolder(View view) {
+            super(view);
+            news_title = view.findViewById(R.id.news_title);
+            news_desc = view.findViewById(R.id.news_desc);
+            news_image = view.findViewById(R.id.news_image);
+            deleteNews = view.findViewById(R.id.deleteNews);
+            shareNews = view.findViewById(R.id.shareNews);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+//                    Toast.makeText(context,articleArrayList.get(getAdapterPosition()).getTitle(),Toast.LENGTH_LONG).show();
+//                    ArticleFragment articleFragment = ArticleFragment.newInstance(articleArrayList.get(getAdapterPosition()),"");
+                    ArticleFragment articleFragment = new ArticleFragment();
+                    Bundle args = new Bundle();
+                    args.putParcelable("param1", articleArrayList.get(getAdapterPosition()));
+                    args.putString("param2", "");
+                    articleFragment.setArguments(args);
+                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.setCustomAnimations(R.animator.fragment_slide_left_enter,
+                            R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter,
+                            R.animator.fragment_slide_right_exit);
+                    fragmentTransaction.add(R.id.firstLayout, articleFragment)
+                            .addToBackStack(MainActivity.FRAGMENT_TAG)
+                            .commit();
+                }
+            });
+
+            newsAppDBHelper = new NewsAppDBHelper(view.getContext());
+
+            sqLiteDatabase = newsAppDBHelper.getWritableDatabase();
+            final ContentValues contentValues = new ContentValues();
+            final Gson gson = new Gson();
+
+
+            deleteNews.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    alertDialog(view.getContext(), getAdapterPosition(), view).show();
+
+                }
+            });
+            shareNews.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ArticlesItem articlesItem = articleArrayList.get(getAdapterPosition());
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_SEND);
+                    intent.putExtra(Intent.EXTRA_TEXT, "Check out this news article \n " + articlesItem.getTitle() + " \nLink : " + articlesItem.getUrl() +
+                            "\nTry the NewsApp  ");
+                    intent.setType("text/plain");
+                    activity.startActivity(Intent.createChooser(intent, "SEND TO "));
+                }
+            });
+        }
     }
 
 

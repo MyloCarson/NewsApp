@@ -5,5 +5,5 @@ package com.mylocarson.newsapp.interfaces;
  */
 
 public interface OnEmptyRecycler {
-    void showNoEventTextView();
+    // --Commented out by Inspection (29/05/2018, 17:44):void showNoEventTextView();
 }

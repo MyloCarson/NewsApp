@@ -7,7 +7,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        android:background="@color/white"
+        tools:ignore="UselessParent">
         <!--<android.support.v4.widget.Space-->
             <!--android:layout_width="match_parent"-->
             <!--android:layout_height="wrap_content"-->
@@ -26,7 +27,8 @@
             android:layout_margin="10dp"
             android:padding="5dp"
             android:fontFamily="@font/lato_regular"
-            android:layout_below="@id/space"/>
+            android:layout_below="@id/space"
+            android:inputType="text" />
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -58,7 +60,8 @@
             android:textSize="15sp"
             android:textStyle="normal"
             android:fontFamily="@font/lato_regular"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:targetApi="lollipop" />
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

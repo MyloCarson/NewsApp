@@ -1,22 +1,17 @@
 package com.mylocarson.newsapp;
 
-import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
 
 import com.mylocarson.newsapp.activities.SavedNewsActivity;
 import com.mylocarson.newsapp.fragment.EntertainmentFragment;
@@ -25,41 +20,36 @@ import com.mylocarson.newsapp.fragment.SearchFragment;
 import com.mylocarson.newsapp.fragment.SportsFragment;
 
 import java.util.ArrayList;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import java.util.Objects;
 
 
 public class MainActivity extends AppCompatActivity {
 
 
-    Context context;
+    // --Commented out by Inspection (29/05/2018, 17:44):private Context context;
 
-    Toolbar toolbar;
-    ViewPager viewpager;
-    TabLayout tabLayout;
+    private TabLayout tabLayout;
 
-    private int [] tabIcons = {R.mipmap.tent,R.mipmap.news,R.mipmap.fitbit,R.mipmap.search};
+    private final int [] tabIcons = {R.mipmap.tent,R.mipmap.news,R.mipmap.fitbit,R.mipmap.search};
     public static final String FRAGMENT_TAG ="ArticleFragment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
 
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        viewpager = (ViewPager) findViewById(R.id.viewpager);
+        ViewPager viewpager = findViewById(R.id.viewpager);
         setUpViewPager(viewpager);
         viewpager.setCurrentItem(1);
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewpager);
         setTabIcons();
 
-        context = this;
 
 
     }
@@ -83,10 +73,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setTabIcons(){
-        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
-        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
-        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
-        tabLayout.getTabAt(3).setIcon(tabIcons[3]);
+        Objects.requireNonNull(tabLayout.getTabAt(0)).setIcon(tabIcons[0]);
+        Objects.requireNonNull(tabLayout.getTabAt(1)).setIcon(tabIcons[1]);
+        Objects.requireNonNull(tabLayout.getTabAt(2)).setIcon(tabIcons[2]);
+        Objects.requireNonNull(tabLayout.getTabAt(3)).setIcon(tabIcons[3]);
     }
 
     private void setUpViewPager(ViewPager viewpager){
@@ -101,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         class ViewPagerAdapter extends FragmentPagerAdapter{
             private final ArrayList<Fragment> fragments = new ArrayList<>();
             private final ArrayList<String> fragmentsTitle = new ArrayList<>();
-            public ViewPagerAdapter(android.support.v4.app.FragmentManager fm) {
+            ViewPagerAdapter(android.support.v4.app.FragmentManager fm) {
                 super(fm);
             }
 
@@ -125,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                 return fragments.get(position);
             }
 
-            public void addFragement(Fragment fragment , String title){
+            void addFragement(Fragment fragment, String title){
                 fragments.add(fragment);
                 fragmentsTitle.add(title);
             }

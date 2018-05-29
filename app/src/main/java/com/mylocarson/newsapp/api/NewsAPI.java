@@ -12,18 +12,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class NewsAPI {
-    private NewsService newsService;
-
-    Gson gson = new GsonBuilder()
+    private final Gson gson = new GsonBuilder()
             .setLenient()
             .create();
-    Retrofit retrofit = new Retrofit.Builder()
+    private final Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(Constants.END_POINT)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build();
 
     public NewsService getNewsService() {
-        this.newsService = retrofit.create(NewsService.class);
-        return newsService;
+        return retrofit.create(NewsService.class);
     }
 }

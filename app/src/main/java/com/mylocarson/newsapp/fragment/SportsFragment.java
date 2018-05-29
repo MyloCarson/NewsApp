@@ -1,8 +1,8 @@
 package com.mylocarson.newsapp.fragment;
 
-import android.content.Context;
-import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -29,68 +29,62 @@ import com.mylocarson.newsapp.util.AppPreference;
 import com.mylocarson.newsapp.util.Constants;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
+@SuppressWarnings("ALL")
 public class SportsFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    NewsService newsService;
-    News news;
-    ArrayList<ArticlesItem> articlesItemArrayList;
-
-    RecyclerView recyclerView;
-    ProgressBar progressBar;
-    AppCompatActivity appCompatActivity;
-
-    public Button readMoreButton;
-    public ProgressBar readMoreProgress;
-
-    public int page_count = 1;
-
-    NewsRecyclerAdapter newsRecyclerAdapter;
-
-    SwipeRefreshLayout swipeRefreshLayout;
+    private Button readMoreButton;
+    private ProgressBar readMoreProgress;
+    private int page_count = 1;
+    private NewsService newsService;
+    private News news;
+    private ArrayList<ArticlesItem> articlesItemArrayList;
+    private RecyclerView recyclerView;
+    // --Commented out by Inspection (29/05/2018, 17:44):ProgressBar progressBar;
+    private AppCompatActivity appCompatActivity;
+    private NewsRecyclerAdapter newsRecyclerAdapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
 
     public SportsFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SportsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SportsFragment newInstance(String param1, String param2) {
-        SportsFragment fragment = new SportsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+// --Commented out by Inspection START (29/05/2018, 17:44):
+//    /**
+//     * Use this factory method to create a new instance of
+//     * this fragment using the provided parameters.
+//     *
+//     * @param param1 Parameter 1.
+//     * @param param2 Parameter 2.
+//     * @return A new instance of fragment SportsFragment.
+//     */
+//    // TODO: Rename and change types and number of parameters
+//    public static SportsFragment newInstance(String param1, String param2) {
+//        SportsFragment fragment = new SportsFragment();
+//        Bundle args = new Bundle();
+//        args.putString(ARG_PARAM1, param1);
+//        args.putString(ARG_PARAM2, param2);
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
+// --Commented out by Inspection STOP (29/05/2018, 17:44)
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            String mParam1 = getArguments().getString(ARG_PARAM1);
+            String mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -100,18 +94,18 @@ public class SportsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sports, container, false);
 
-        recyclerView = (RecyclerView)view.findViewById(R.id.sportsRecycler);
-        readMoreButton = (Button)view.findViewById(R.id.readMore);
-        readMoreProgress = (ProgressBar)view.findViewById(R.id.readMoreProgress);
-        appCompatActivity = (AppCompatActivity)getActivity();
-        swipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.sportSwipe);
+        recyclerView = view.findViewById(R.id.sportsRecycler);
+        readMoreButton = view.findViewById(R.id.readMore);
+        readMoreProgress = view.findViewById(R.id.readMoreProgress);
+        appCompatActivity = (AppCompatActivity) getActivity();
+        swipeRefreshLayout = view.findViewById(R.id.sportSwipe);
 
-        newsService = new  NewsAPI().getNewsService();
+        newsService = new NewsAPI().getNewsService();
 
-        if (AppPreference.getNews(getContext(),Constants.SPORTS)!=null){
-            news = AppPreference.getNews(getContext(),Constants.SPORTS);
+        if (AppPreference.getNews(getContext(), Constants.SPORTS) != null) {
+            news = AppPreference.getNews(getContext(), Constants.SPORTS);
             setUpRecycler(news.getArticles());
-        }else{
+        } else {
             fetchNews();
         }
 
@@ -123,44 +117,47 @@ public class SportsFragment extends Fragment {
         });
 
 
-
-        return  view;
+        return view;
     }
 
-    private void fetchNews(){
-        Call<News> getEverythingSports = newsService.getEverything(Constants.GET_EVERYTHING_SPORTS,Constants.API_KEY);
+    private void fetchNews() {
+        Call<News> getEverythingSports = newsService.getEverything(Constants.GET_EVERYTHING_SPORTS, Constants.API_KEY);
         getEverythingSports.enqueue(new Callback<News>() {
             @Override
-            public void onResponse(Call<News> call, Response<News> response) {
-                Log.d("STATUS", response.body().getStatus());
+            public void onResponse(@NonNull Call<News> call, @NonNull Response<News> response) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    Log.d("STATUS", Objects.requireNonNull(response.body()).getStatus());
+                }
                 Log.d("ConnectStat", response.message());
                 Log.d("ConnCode", Integer.toString(response.code()));
 
-                if (swipeRefreshLayout.isRefreshing()){
+                if (swipeRefreshLayout.isRefreshing()) {
                     swipeRefreshLayout.setRefreshing(false);
                 }
 
                 if (response.body() != null) {
                     news = response.body();
 
-                    AppPreference.saveNews(getContext(),news,Constants.SPORTS);//save news in SharedPref for next use
+                    AppPreference.saveNews(getContext(), news, Constants.SPORTS);//save news in SharedPref for next use
 
                     try {
-                        articlesItemArrayList = response.body().getArticles();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                            articlesItemArrayList = Objects.requireNonNull(response.body()).getArticles();
+                        }
                     } catch (Exception e) {
-                        Log.e("Sports","From Sports Fragment "+e.toString());
-                        Snackbar.make(recyclerView,"Issues with fetching data",Snackbar.LENGTH_SHORT).show();
+                        Log.e("Sports", "From Sports Fragment " + e.toString());
+                        Snackbar.make(recyclerView, "Issues with fetching data", Snackbar.LENGTH_SHORT).show();
                     }
                     setUpRecycler(articlesItemArrayList);
 
-                }else{
-                    Snackbar.make(recyclerView,"Issues with fetching data",Snackbar.LENGTH_SHORT).show();
+                } else {
+                    Snackbar.make(recyclerView, "Issues with fetching data", Snackbar.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<News> call, Throwable t) {
-                if (swipeRefreshLayout.isRefreshing()){
+            public void onFailure(@NonNull Call<News> call, @NonNull Throwable t) {
+                if (swipeRefreshLayout.isRefreshing()) {
                     swipeRefreshLayout.setRefreshing(false);
                 }
 
@@ -171,7 +168,7 @@ public class SportsFragment extends Fragment {
         });
     }
 
-    private void setUpRecycler( final ArrayList<ArticlesItem> articlesItemArrayList){
+    private void setUpRecycler(final ArrayList<ArticlesItem> articlesItemArrayList) {
         newsRecyclerAdapter = new NewsRecyclerAdapter(appCompatActivity, getContext(), articlesItemArrayList);
         recyclerView.setAdapter(newsRecyclerAdapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -190,7 +187,7 @@ public class SportsFragment extends Fragment {
             @Override
             public void onScrollStateChanged(final RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (!recyclerView.canScrollVertically(1)){
+                if (!recyclerView.canScrollVertically(1)) {
                     readMoreButton.setVisibility(View.VISIBLE);
                     readMoreButton.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -198,40 +195,38 @@ public class SportsFragment extends Fragment {
                             readMoreProgress.setVisibility(View.VISIBLE);
                             readMoreButton.setVisibility(View.GONE);
 
-                            page_count = page_count+1;
+                            page_count = page_count + 1;
 
-                            Call<News> getMoreSports = newsService.getEverything(Constants.GET_EVERYTHING_SPORTS,Constants.API_KEY,page_count);
+                            Call<News> getMoreSports = newsService.getEverything(Constants.GET_EVERYTHING_SPORTS, Constants.API_KEY, page_count);
                             getMoreSports.enqueue(new Callback<News>() {
                                 @Override
-                                public void onResponse(Call<News> call, Response<News> response) {
+                                public void onResponse(@NonNull Call<News> call, @NonNull Response<News> response) {
                                     readMoreProgress.setVisibility(View.GONE);
                                     readMoreButton.setVisibility(View.VISIBLE);
 
-                                    if (response.body()!=null){
-                                        for (ArticlesItem item: response.body().getArticles()
-                                                ) {
-                                            articlesItemArrayList.add(item);
-
+                                    if (response.body() != null) {
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                                            articlesItemArrayList.addAll(Objects.requireNonNull(response.body()).getArticles());
                                         }
                                         newsRecyclerAdapter.notifyDataSetChanged();
                                     }
                                 }
 
                                 @Override
-                                public void onFailure(Call<News> call, Throwable t) {
+                                public void onFailure(@NonNull Call<News> call, @NonNull Throwable t) {
 
-                                    page_count = page_count-1;//go back to initial page value
+                                    page_count = page_count - 1;//go back to initial page value
 
                                     readMoreProgress.setVisibility(View.GONE);
                                     readMoreButton.setVisibility(View.VISIBLE);
 
-                                    Snackbar.make(recyclerView,"Cant recall",Snackbar.LENGTH_LONG).show();
+                                    Snackbar.make(recyclerView, "Cant recall", Snackbar.LENGTH_LONG).show();
 
                                 }
                             });
                         }
                     });
-                }else{
+                } else {
                     readMoreButton.setVisibility(View.GONE);
                 }
             }

@@ -11,12 +11,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class NewsAppDBHelper extends SQLiteOpenHelper {
 
-    private static final String DATABASENAME  = "newsapp.db";
+    private static final String DATABASENAME = "newsapp.db";
     private static final int DATABASE_VERSION = 1;
 
 
-    private static final String CREATE_TABLE_STATEMENT = " CREATE TABLE " + NewsContract.NewsItem.TABLE_NAME + " ( "+
-            NewsContract.NewsItem._ID +" INTEGER PRIMARY KEY AUTOINCREMENT, " + NewsContract.NewsItem.FIRST_COLUMN+
+    private static final String CREATE_TABLE_STATEMENT = " CREATE TABLE " + NewsContract.NewsItem.TABLE_NAME + " ( " +
+            NewsContract.NewsItem._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + NewsContract.NewsItem.FIRST_COLUMN +
             " TEXT NOT NULL );";
 
     private static final String SQL_DELETE_ENTRIES =
@@ -37,8 +37,4 @@ public class NewsAppDBHelper extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-    @Override
-    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        super.onDowngrade(db, oldVersion, newVersion);
-    }
 }

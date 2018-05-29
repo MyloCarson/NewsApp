@@ -80,7 +80,8 @@ android:layout_height="match_parent">
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:titleTextColor="@color/white"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:layout_scrollFlags="scroll|enterAlways">
+        app:layout_scrollFlags="scroll|enterAlways"
+        tools:targetApi="lollipop">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -94,7 +95,9 @@ android:layout_height="match_parent">
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:scaleType="fitCenter"
-                android:id="@+id/logo"/>
+                android:id="@+id/logo"
+                android:contentDescription="@string/logo"
+                tools:ignore="ContentDescription" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -116,7 +119,6 @@ android:layout_height="match_parent">
     android:layout_below="@id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/eventplannerLayout"
     tools:context="com.mylocarson.newsapp.activities.SavedNewsActivity"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -136,12 +138,13 @@ android:layout_height="match_parent">
         android:fontFamily="@font/open_sans_semibold"
         android:textSize="18sp"
         android:gravity="center_vertical|center|center_horizontal"
-        android:text="No Saved News"
+        android:text="@string/no_saved_news"
         android:textColor="@color/black"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:id="@+id/noNews" />
+        android:id="@+id/noNews"
+        tools:ignore="HardcodedText" />
 
 </android.support.constraint.ConstraintLayout>
 

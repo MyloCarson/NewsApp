@@ -5,7 +5,7 @@ package com.mylocarson.newsapp.util;
  */
 
 public class Constants {
-    public static final String API_KEY ="a895aff9616c4e0e86cb67aa1f22afdf";
+    public static final String API_KEY = "a895aff9616c4e0e86cb67aa1f22afdf";
     public static final String END_POINT = "https://newsapi.org/v2/";
     public static final String COUNTRY_CODE = "ng";
     public static final String LANGUAGE = "en";
@@ -15,8 +15,7 @@ public class Constants {
     public static final String HEADLINES = "headlines";
     public static final String SPORTS = "sports";
     public static final String ENTERTAINMENT = "entertainment";
-    public static final String SEARCH ="search";
-
+    public static final String SEARCH = "search";
 
 
 }

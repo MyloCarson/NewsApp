@@ -1,24 +1,22 @@
 package com.mylocarson.newsapp.adapters;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.mylocarson.newsapp.MainActivity;
@@ -27,7 +25,6 @@ import com.mylocarson.newsapp.database.NewsAppDBHelper;
 import com.mylocarson.newsapp.database.NewsContract;
 import com.mylocarson.newsapp.fragment.ArticleFragment;
 import com.mylocarson.newsapp.models.ArticlesItem;
-import com.mylocarson.newsapp.models.News;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -38,34 +35,34 @@ import java.util.ArrayList;
 
 
 public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapter.MyViewHolder> {
-    ArrayList<ArticlesItem> articleArrayList;
-    Context context;
-    AppCompatActivity activity;
-    SQLiteDatabase sqLiteDatabase;
+    private final ArrayList<ArticlesItem> articleArrayList;
+    private final Context context;
+    private final AppCompatActivity activity;
+    private SQLiteDatabase sqLiteDatabase;
 
-    NewsAppDBHelper newsAppDBHelper;
-
-    public NewsRecyclerAdapter(AppCompatActivity activity, Context context,ArrayList<ArticlesItem> articleArrayList){
+    public NewsRecyclerAdapter(AppCompatActivity activity, Context context, ArrayList<ArticlesItem> articleArrayList) {
         this.articleArrayList = articleArrayList;
         this.context = context;
         this.activity = activity;
     }
+
+    @NonNull
     @Override
-    public NewsRecyclerAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_list_item,parent,false);
+    public NewsRecyclerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_list_item, parent, false);
 
         return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(NewsRecyclerAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull NewsRecyclerAdapter.MyViewHolder holder, int position) {
         holder.news_title.setText(articleArrayList.get(position).getTitle());
         holder.news_desc.setText(articleArrayList.get(position).getDescription());
         Picasso.with(context)
                 .load(articleArrayList.get(position).getUrlToImage())
                 .placeholder(R.mipmap.no_imagee)
                 .error(R.mipmap.no_imagee)
-                .resize(250,250)
+                .resize(250, 250)
                 .centerCrop()
                 .into(holder.news_image);
         setAnimation(holder.itemView);
@@ -78,17 +75,30 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
         return this.articleArrayList.size();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder{
-        private TextView news_title;
-        private TextView news_desc;
-        private ImageView news_image, saveNews,shareNews;
+    private void setAnimation(View view) {
+        AlphaAnimation animation = new AlphaAnimation(0.0f, 1.0f);
+        animation.setDuration(1000);
+        view.startAnimation(animation);
+    }
 
-        public MyViewHolder(View view){
+    @Override
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+        sqLiteDatabase.close();
+    }
+
+    class MyViewHolder extends RecyclerView.ViewHolder {
+        private final TextView news_title;
+        private final TextView news_desc;
+        private final ImageView news_image;
+        private final ImageView saveNews;
+        private final ImageView shareNews;
+
+        MyViewHolder(View view) {
             super(view);
-            news_title = (TextView)view.findViewById(R.id.news_title);
-            news_desc = (TextView)view.findViewById(R.id.news_desc);
-            news_image = (ImageView)view.findViewById(R.id.news_image);
-            saveNews = (ImageView)view.findViewById(R.id.saveNews);
+            news_title = view.findViewById(R.id.news_title);
+            news_desc = view.findViewById(R.id.news_desc);
+            news_image = view.findViewById(R.id.news_image);
+            saveNews = view.findViewById(R.id.saveNews);
             shareNews = view.findViewById(R.id.shareNews);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -97,37 +107,37 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
 //                    ArticleFragment articleFragment = ArticleFragment.newInstance(articleArrayList.get(getAdapterPosition()),"");
                     ArticleFragment articleFragment = new ArticleFragment();
                     Bundle args = new Bundle();
-                    args.putParcelable("param1",articleArrayList.get(getAdapterPosition()));
-                    args.putString("param2","");
+                    args.putParcelable("param1", articleArrayList.get(getAdapterPosition()));
+                    args.putString("param2", "");
                     articleFragment.setArguments(args);
                     FragmentManager fragmentManager = activity.getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.setCustomAnimations(R.animator.fragment_slide_left_enter,
-                            R.animator.fragment_slide_left_exit,R.animator.fragment_slide_right_enter,
+                            R.animator.fragment_slide_left_exit, R.animator.fragment_slide_right_enter,
                             R.animator.fragment_slide_right_exit);
-                    fragmentTransaction.add(R.id.firstLayout,articleFragment)
+                    fragmentTransaction.add(R.id.firstLayout, articleFragment)
                             .addToBackStack(MainActivity.FRAGMENT_TAG)
                             .commit();
                 }
             });
 
-            newsAppDBHelper =  new NewsAppDBHelper(view.getContext());
+            NewsAppDBHelper newsAppDBHelper = new NewsAppDBHelper(view.getContext());
 
             sqLiteDatabase = newsAppDBHelper.getWritableDatabase();
-            final ContentValues contentValues =  new ContentValues();
+            final ContentValues contentValues = new ContentValues();
             final Gson gson = new Gson();
 
 
             saveNews.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ArticlesItem  articlesItem = articleArrayList.get(getAdapterPosition());
+                    ArticlesItem articlesItem = articleArrayList.get(getAdapterPosition());
                     String stringToSave = gson.toJson(articlesItem);
-                    contentValues.put(NewsContract.NewsItem.FIRST_COLUMN,stringToSave);
+                    contentValues.put(NewsContract.NewsItem.FIRST_COLUMN, stringToSave);
 
-                    long id  = sqLiteDatabase.insert(NewsContract.NewsItem.TABLE_NAME,null,contentValues);
-                    if (id != 0){
-                        Snackbar.make(view,"Saved",Snackbar.LENGTH_SHORT).show();
+                    long id = sqLiteDatabase.insert(NewsContract.NewsItem.TABLE_NAME, null, contentValues);
+                    if (id != 0) {
+                        Snackbar.make(view, "Saved", Snackbar.LENGTH_SHORT).show();
                     }
 
 
@@ -140,23 +150,12 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
                     ArticlesItem articlesItem = articleArrayList.get(getAdapterPosition());
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_SEND);
-                    intent.putExtra(Intent.EXTRA_TEXT, "Check out this news article \n "+articlesItem.getTitle() +" \nLink : "+articlesItem.getUrl()+
+                    intent.putExtra(Intent.EXTRA_TEXT, "Check out this news article \n " + articlesItem.getTitle() + " \nLink : " + articlesItem.getUrl() +
                             "\nTry the NewsApp  ");
                     intent.setType("text/plain");
-                    activity.startActivity(Intent.createChooser(intent,"SEND TO "));
+                    activity.startActivity(Intent.createChooser(intent, "SEND TO "));
                 }
             });
         }
-    }
-
-    private void setAnimation (View view){
-        AlphaAnimation animation = new AlphaAnimation(0.0f,1.0f);
-        animation.setDuration(1000);
-        view.startAnimation(animation);
-    }
-
-    @Override
-    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
-        sqLiteDatabase.close();
     }
 }

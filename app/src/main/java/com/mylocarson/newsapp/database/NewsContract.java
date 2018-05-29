@@ -8,9 +8,10 @@ import android.provider.BaseColumns;
 
 public class NewsContract {
 
-    private NewsContract(){}
+    private NewsContract() {
+    }
 
-    public static class  NewsItem  implements BaseColumns{
+    public static class NewsItem implements BaseColumns {
         public static final String TABLE_NAME = "saved_news";
         public static final String FIRST_COLUMN = "news_gson";
 
